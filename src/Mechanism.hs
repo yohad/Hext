@@ -36,7 +36,7 @@ insert c = do
     let (before, after) = splitAt pos text in setText $ before ++ c : after
     addToPointer 1
 
-execInsert :: Content -> Content
+execInsert :: Char -> Content -> Content
 execInsert = execState . insert
 
 insertMany :: String -> State Content ()
