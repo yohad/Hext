@@ -1,6 +1,6 @@
-module Mechanism() where
+module Mechanism where
 
-import Control.Monad.Trans.State
+import Control.Monad.State
 
 data Content = Content {
     getText :: String,
