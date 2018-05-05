@@ -1,6 +1,7 @@
 module Mechanism where
 
 import Control.Monad.State
+import Safe
 
 data Content = Content {
     getText :: String,
@@ -27,14 +28,19 @@ addToPointer :: Int -> State Content ()
 addToPointer n = do
     text <- fetchText
     pos <- fetchPointer
-    put $ Content text (pos + n)
+    put $ Content text (max 0 (pos + n))
 
 insert :: Char -> State Content ()
 insert c = do
     text <- fetchText
     pos <- fetchPointer
-    let (before, after) = splitAt pos text in setText $ before ++ c : after
-    addToPointer 1
+    case c of
+        '\DEL' -> do
+            let (before, after) = splitAt (pos - 1) text in setText $ before ++ tailSafe after
+            addToPointer (-1)
+        ch -> do
+            let (before, after) = splitAt pos text in setText $ before ++ ch : after
+            addToPointer 1
 
 execInsert :: Char -> Content -> Content
 execInsert = execState . insert
