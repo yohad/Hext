@@ -11,10 +11,9 @@ makeNetworkDescription addKeyEvent =  do
     eKey <- fromAddHandler addKeyEvent
     let 
         eInsertChar = execInsert <$> eKey
-        bState = accumB initialState eInsertChar
+    bState <- accumB initialState eInsertChar
     eStateChanged <- changes bState
-    reactimate' $ fmap (\state -> putStrLn ("Text: " ++ getText state ++ "; Pointer: " ++ getPointer state))
-                  <$> eStateChanged
+    reactimate' $ (fmap (\state -> putStrLn $ "Text: " ++ getText state ++ "; Pointer: " ++ (show $ getPointer state))) `fmap` eStateChanged
 
 main :: IO ()
 main = do
