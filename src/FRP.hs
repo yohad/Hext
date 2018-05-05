@@ -6,7 +6,7 @@ import Control.Monad (forever)
 import Control.Monad.State (execState)
 import Mechanism
 
-makeNetworkDescription :: Frameworks t => AddHandler Char -> Moment t ()
+makeNetworkDescription :: AddHandler Char -> MomentIO ()
 makeNetworkDescription addKeyEvent =  do
     eKey <- fromAddHandler addKeyEvent
     let 
